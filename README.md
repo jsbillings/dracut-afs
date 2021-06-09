@@ -25,3 +25,8 @@ To use this module in an initrd, copy the contents of the `*.sh` into /usr/lib/d
 (the spaces around "afs" are important, dracut will complain if they aren't there and you can break the build process)
 
 Then rebuild your initrd with `dracut -vf`.  Now your initrd should let you boot from AFS.
+
+# Notes for building a bootable Fedora or CentOS image in AFS
+* Make sure you install and enable the `readonly-root` package and systemd service
+* You can use `chroot /afs/.yourcell/path/to/your/volume /bin/bash` with AFS tokens to modify the chroot, but make sure to run as root so you can make sure the files appear to be owned as root
+* A lot of files end up being owned by 'bin' (UID 1) and not 'root' (UID 0) if you just edit files as root.  Use tools like `rsync -av` to copy from Linux filesystems and preserve ownership/mode.
